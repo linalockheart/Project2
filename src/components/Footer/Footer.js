@@ -31,6 +31,7 @@ class Footer extends React.Component {
             Privacy
           </Link>
           <span className={s.spacer}>·</span>
+          {/* adding comments */}
           <Link className={s.link} to="/not-found">
             Not Found
           </Link>
