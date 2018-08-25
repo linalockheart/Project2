@@ -1,5 +1,5 @@
 
-var path = require('path');
+var path = require("path");
 
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 require("./app/routing/apiRoutes")(app);
 require("./app/routing/htmlRoutes.js")(app);
 
+console.log(path);
+
 
 // request({
 //   url: 'https://api.foursquare.com/v2/venues/explore',
@@ -22,7 +24,7 @@ require("./app/routing/htmlRoutes.js")(app);
 //   qs: {
 //     client_id: 'ILMLHZWCXE2UVCAMQCTI0IYDKLU4YLUQANSWQVNLPZJW0IY4',
 //     client_secret: 'HO010YK2ASDUOAXEWIQCHH1XFCY3FLORRJIDZUJ0ZRIUHWHR',
-//     ll: '39.9717,-75.1280', 
+//     ll: '39.9717,-75.1280',
 //     query: 'bar',
 //     v: '20180323',
 //     limit: 5
@@ -38,6 +40,5 @@ require("./app/routing/htmlRoutes.js")(app);
 
 
 app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
-  });
-
+  console.log("App listening on PORT " + PORT);
+});

@@ -15,8 +15,6 @@ var geocoder = NodeGeocoder(options);
 console.log(path);
 
 
-
-
 module.exports = function (app) {
 
   app.post("/api", function (req, res) {
@@ -36,7 +34,7 @@ module.exports = function (app) {
           method: "GET",
           qs: {
             clientId: "ILMLHZWCXE2UVCAMQCTI0IYDKLU4YLUQANSWQVNLPZJW0IY4",
-            clientSecret: "HO010YK2ASDUOAXEWIQCHH1XFCY3FLORRJIDZUJ0ZRIUHWHR",
+            clientSecret: "HSKATJ0AWH0FO0AJ4BNUW4YX5APXEJN0PW24AQOS3IQGOHFK",
             ll: result,
             query: newSearch.name,
             v: "20180323",
