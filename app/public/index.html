@@ -34,15 +34,18 @@
     <script>
         $("#submit").on("click", function (event) {
             event.preventDefault();
+            console.log("submit button works");
             var newSearch = {
                 name: $("#search").val().trim(),
                 location: $("#location").val().trim()
             }
+            console.log(newSearch);
 
             $.post("/api", newSearch)
                 .then(function (data) {
-                    console.log(data)
+                    console.log(data) //this is coming back
                     alert("searching venues");
+                    console.log($("#results"));
                     $("#results").text(JSON.stringify(data.response.venues[0]));
                 })
             $.post("/api", newSearch)

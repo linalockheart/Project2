@@ -7,7 +7,7 @@ var options = {
 
   // Optional depending on the providers
   httpAdapter: "https", // Default
-  apiKey: "PkbrJL7xu1GhLJIDiKQ8bOuvgKb3LzAV", // for Mapquest, OpenCage, Google Premier
+  // apiKey: "PkbrJL7xu1GhLJIDiKQ8bOuvgKb3LzAV", // for Mapquest, OpenCage, Google Premier
   formatter: null // 'gpx', 'string', ...
 };
 
@@ -35,8 +35,8 @@ module.exports = function (app) {
           url: "https://api.foursquare.com/v2/venues/search",
           method: "GET",
           qs: {
-            clientId: "ILMLHZWCXE2UVCAMQCTI0IYDKLU4YLUQANSWQVNLPZJW0IY4",
-            clientSecret: "HO010YK2ASDUOAXEWIQCHH1XFCY3FLORRJIDZUJ0ZRIUHWHR",
+            clientId: "LOTPTDA4CBLSW44V2PHFTFIET1TNAQLOZ1USKWP3GEK11MEI",
+            clientSecret: "2AZKLG2BS1UTUKNDNKWRR3RD2RRCUADX113OBHCFOCKOIECE",
             ll: result,
             query: newSearch.name,
             v: "20180323",
