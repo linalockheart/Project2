@@ -1,5 +1,11 @@
 var path = require("path");
 var request = require("request");
+console.log(path);
+require("dotenv").config();
+var keys = require("../../keys.js");
+
+console.log(path);
+console.log(keys);
 var NodeGeocoder = require("node-geocoder");
 
 var options = {
@@ -7,12 +13,12 @@ var options = {
 
   // Optional depending on the providers
   httpAdapter: "https", // Default
-  apiKey: "PkbrJL7xu1GhLJIDiKQ8bOuvgKb3LzAV", // for Mapquest, OpenCage, Google Premier
+  api_key: process.env.GOOGLE_MAPS_API, // for Mapquest, OpenCage, Google Premier
   formatter: null // 'gpx', 'string', ...
 };
-
 var geocoder = NodeGeocoder(options);
-console.log(path);
+
+
 
 
 module.exports = function (app) {
@@ -33,8 +39,8 @@ module.exports = function (app) {
           url: "https://api.foursquare.com/v2/venues/search",
           method: "GET",
           qs: {
-            clientId: "ILMLHZWCXE2UVCAMQCTI0IYDKLU4YLUQANSWQVNLPZJW0IY4",
-            clientSecret: "HSKATJ0AWH0FO0AJ4BNUW4YX5APXEJN0PW24AQOS3IQGOHFK",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
             ll: result,
             query: newSearch.name,
             v: "20180323",
