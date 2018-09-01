@@ -47,7 +47,7 @@
 
                     </div>
                     <div id="options">
-                        
+
                     </div>
                     <script>
                         $("#submit").on("click", function (event) {
@@ -70,17 +70,34 @@
                                             .html(venue.name);
                                         var optionButton = $("<button>")
                                             .val("click me")
+                                            .addClass("venue-button")
                                             .attr("data-venue-id", venue.id)
+                                            .attr("data-venue-name", venue.name)
                                             .text("Select Me");
 
                                         optionDiv.append(optionButton);
 
                                         $("#options").append(optionDiv);
-                                    }})
+                                    }
                                 })
+                        })
+                        $(document).on("click", ".venue-button", function (event) {
+                            event.preventDefault();
+                            var newBar = {
+                                id: $(this).attr("data-venue-id"),
+                                name: $(this).attr("data-venue-name")
+                            }
+                            $.ajax({
+                                url: "/api/venue/add/" + $(this).attr("data-venue-id"),
+                                method: "POST"
+                            }).then(function (results) {
+                                location.reload();
+                            });
+                        });
 
-                        
-        
+
+
+
                     </script>
 </body>
 

@@ -15,12 +15,10 @@ var options = {
 
   // Optional depending on the providers
   httpAdapter: "https", // Default
-  api_key: process.env.GOOGLE_MAPS_API, // for Mapquest, OpenCage, Google Premier
+  apiKey: process.env.apiKey, // for Mapquest, OpenCage, Google Premier
   formatter: null // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
-
-
 
 
 module.exports = function (app) {
@@ -60,6 +58,22 @@ module.exports = function (app) {
 
       });
   });
+
+  app.post("/api/venue/add", function (req, res) {
+    var newBar = req.body;
+    newBar.routeName = newBar.name.replace(/\s+/g, "").toLowerCase();
+    console.log("this is the new bars route ="+ newBar.routeName);
+    console.log("only console-logging this for eslint "+ res);
+  });
+
+
+  app.get("/api/venue/:bar", function(req, res) {
+    var chosenBar = req.params.bar;
+    console.log("only console-logging this for eslint "+ res);
+
+    console.log(chosenBar);
+  });
+
   // Get all examples
   app.get("/api/examples", ensureLogin.ensureLoggedIn("/login"), function(
     req,
