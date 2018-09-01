@@ -46,7 +46,7 @@ module.exports = function (app) {
             ll: result,
             query: newSearch.name,
             v: "20180323",
-            limit: 1
+            limit: 5
           }
         }, function (err, result, body) {
           if (err) {
