@@ -59,11 +59,56 @@ module.exports = function (app) {
       });
   });
 
-  app.post("/api/venue/add", function (req, res) {
-    var newBar = req.body;
-    newBar.routeName = newBar.name.replace(/\s+/g, "").toLowerCase();
-    console.log("this is the new bars route ="+ newBar.routeName);
-    console.log("only console-logging this for eslint "+ res);
+  //   var bars = [
+  //     {
+  //       routeName: "local44",
+  //       name: "Yoda",
+  //       role: "Jedi Master",
+  //       id: 900,
+  //       forcePoints: 2000
+  //     },
+  //     {
+  //       routeName: "craftworks",
+  //       name: "Darth Maul",
+  //       role: "Sith Lord",
+  //       id: 200,
+  //       forcePoints: 1200
+  //     },
+  //     {
+  //       routeName: "johnnybrendas",
+  //       name: "Obi Wan Kenobi",
+  //       role: "Jedi Master",
+  //       id: 55,
+  //       forcePoints: 1350
+  //     }
+  //   ];
+
+  //   app.get("/api/bars", function(req, res) {
+  //     return res.json(bars);
+  //   });
+
+  // // refers to bar id // may not be the best routName
+  //   app.get("/api/venue/add/:id", function(req, res) {
+  //     var chosenBar = req.params.id;
+
+  //     console.log(chosenBar);
+
+  //     for (var i = 0; i < bars.length; i++) {
+  //       if (chosenBar === bars[i].routeName) {
+  //         return res.json(bars[i]);
+  //       }
+  //     }
+
+  //     return res.json(false);
+  //   });
+
+
+  app.post("/api/venue/add", function (request, results) {
+    var newBar = request.body;
+    //newBar.routeName = newBar.id.replace(/\s+/g, "").toLowerCase();
+    console.log("this is the new bars route ="+ newBar.name);
+    //console.log("only console-logging this for eslint "+ results);
+    results.json(newBar);
   });
 
 

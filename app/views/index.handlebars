@@ -88,13 +88,13 @@
                                 name: $(this).attr("data-venue-name")
                             }
                             $.ajax({
-                                url: "/api/venue/add/" + $(this).attr("data-venue-id"),
-                                method: "POST"
+                                url: "/api/venue/add",
+                                method: "POST",
+                                data: newBar
                             }).then(function (results) {
                                 location.reload();
                             });
                         });
-
 
 
 
