@@ -1,43 +1,68 @@
 
-var path = require('path');
+var path = require("path");
 
 var express = require("express");
 var bodyParser = require("body-parser");
+var exphbs = require("express-handlebars");
+var cookieParser = require("cookie-parser");
+var expressSession = require("express-session");
+var morgan = require("morgan");
+var db = require("./app/models");
+require("dotenv").config();
 //var request = require('request');
 
 
 var app = express();
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "app", "views", "layouts")
+  })
+);
+app.set("view engine", "handlebars");
+app.set("views", path.join(__dirname, "app", "views"));
 
+app.use(express.static("./app/public"));
+app.use(morgan("combined"));
+app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  expressSession({
+    secret: "keyboard cat",
+    resave: true,
+    saveUnintialized: true
+  })
+);
+require("./app/routing/loginRoutes.js")(app);
 require("./app/routing/apiRoutes")(app);
 require("./app/routing/htmlRoutes.js")(app);
 
 
-// request({
-//   url: 'https://api.foursquare.com/v2/venues/explore',
-//   method: 'GET',
-//   qs: {
-//     client_id: 'ILMLHZWCXE2UVCAMQCTI0IYDKLU4YLUQANSWQVNLPZJW0IY4',
-//     client_secret: 'HO010YK2ASDUOAXEWIQCHH1XFCY3FLORRJIDZUJ0ZRIUHWHR',
-//     ll: '39.9717,-75.1280', 
-//     query: 'bar',
-//     v: '20180323',
-//     limit: 5
-//   }
-// }, function(err, res, body) {
-//   if (err) {
-//     console.error(err);
-//   } else {
-//     console.log(JSON.parse(body, null, 2));
-//   }
-// });
+var syncOptions = { force: false };
 
+// If running a test, set syncOptions.force to true
+// clearing the `testdb`
+if (process.env.NODE_ENV === "test") {
+  syncOptions.force = true;
+}
 
-
-app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
+    console.log(
+      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
+      PORT,
+      PORT
+    );
   });
+});
+
+module.exports = app;
+
+console.log(path);
+
+
 

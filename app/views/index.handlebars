@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <title>Happy Hour Search</title>
+</head>
+
+<body>
+
+    <div id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    <div>
+                        <h6 class="d-flex justify-content-end">
+                            <a href="/profile">{{ user.displayName }}</a> |
+                            <a href="/logout">Logout</a>
+                        </h6>
+                        <a href="/login/facebook">Log in with Facebook</a>
+                        <h1>{{msg}}</h1>
+                        <h3 id="user-info" class="d-flex flex-column align-self-end">
+
+                        </h3>
+                    </div>
+                    <h1> Make every hour, happy hour!</h1>
+
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Search for Happy Hour Venue</label>
+                            <textarea class="form-control" id="search" rows="3"></textarea>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"> Location</label>
+                            <textarea class="form-control" id="location" rows="3"></textarea>
+
+                        </div>
+                        <button type="button" id="submit" class="btn btn-outline-primary btn-lg">Search</button>
+                    </form>
+                    <div id="results">
+                    </div>
+                    <div id="locationMap">
+
+                    </div>
+                    <div id="options">
+
+                    </div>
+                    <script>
+                        $("#submit").on("click", function (event) {
+                            event.preventDefault();
+                            var newSearch = {
+                                name: $("#search").val().trim(),
+                                location: $("#location").val().trim()
+                            }
+
+                            $.post("/api", newSearch)
+                                .then(function (data) {
+                                    var venues = data.response.venues;
+                                    console.log(venues);
+                                    for (var i = 0; i < venues.length; i++) {
+                                        var venue = venues[i];
+                                        console.log("next venue =" + venue.name);
+                                        var optionDiv = $('<div>')
+                                            .attr("id", venue.id)
+                                            .val(venue.name)
+                                            .html(venue.name);
+                                        var optionButton = $("<button>")
+                                            .val("click me")
+                                            .addClass("venue-button")
+                                            .attr("data-venue-id", venue.id)
+                                            .attr("data-venue-name", venue.name)
+                                            .text("Select Me");
+
+                                        optionDiv.append(optionButton);
+
+                                        $("#options").append(optionDiv);
+                                    }
+                                })
+
+                                     event.preventDefault();
+   
+                        })
+                        $(document).on("click", ".venue-button", function (event) {
+                            event.preventDefault();
+                            var newBar = {
+                                fourSquareId: $(this).attr("data-venue-id"),
+                                venueName: $(this).attr("data-venue-name"),
+                                routeName: $(this).attr("data-venue-name").replace(/\s+/g, "").toLowerCase()
+                            };
+                            console.log("routeName "+ newBar);
+                            $.post("/api/venue/" + newBar.routeName, 
+                                  newBar)
+                            .then(function (results) {
+                                console.log(JSON.stringify(results));
+                                //location.reload();
+                            })
+                            
+                        });
+
+                    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<h1 class="chosenBarName">Bar Name</h1>
+
+<img src ="" alt="bar image"> <!--venue image-->
+
+<iframe width="600" height="450" frameborder="0" style="border:0"
+src="https://www.google.com/maps/embed/v1/directions?origin=" + currentLocation + "&destination=" + barAddress + "&key=" + googleApiKey + allowfullscreen>
+</iframe>
+<!--venue.js file makes spaces in address or bar name into % so we can embed the map -->
+
+<div class="specialsIcons">
+    <i class="fa fa-beer" aria-hidden="true"></i>
+    <i class="fa fa-glass" aria-hidden="true"></i>
+    <i class="fa fa-cutlery" aria-hidden="true"></i>
+</div>
+
+<h2>Add a Comment</h2>
+<form class="create-form">
+
+  <div class="form-group">
+    <input type="text" id="newComment">
+  </div>
+
+<!--Add a way to say if there are beer, liquor, or food specials?-->
+
+  <button type="submit">Submit</button>
+
+<div class ="commentsList">
+    <ul>
+    {{#each comment}}
+    {{/each}}
+    </ul>
+</div>
