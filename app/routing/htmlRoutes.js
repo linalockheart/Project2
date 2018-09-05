@@ -5,7 +5,9 @@ var db = require("../models");
 
 module.exports = function(app) {
   // Load index page
-  app.get("/", ensureLogin.ensureLoggedIn("/login"), function(req, res) {
+  app.get("/", 
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(req, res) {
     db.Example.findAll({}).then(function(dbExamples) {
       res.render("index", {
         user: req.user,
@@ -17,7 +19,9 @@ module.exports = function(app) {
 
 
   // Load example page and pass in an example by id
-  app.get("/example/:id", ensureLogin.ensureLoggedIn("/login"), function(
+  app.get("/example/:id", 
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(
     req,
     res
   ) {
@@ -30,7 +34,9 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/profile", ensureLogin.ensureLoggedIn("/login"), function(req, res) {
+  app.get("/profile", 
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(req, res) {
     res.render("profile", {
       user: req.user
     });

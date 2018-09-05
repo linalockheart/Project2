@@ -63,7 +63,6 @@ db.sequelize.sync(syncOptions).then(function() {
 module.exports = app;
 
 console.log(path);
-console.log("facebook app id" + process.env.clientID);
-console.log("facebook secret id" + process.env.clientSecret);
+
 
 

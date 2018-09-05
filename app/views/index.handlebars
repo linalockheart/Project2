@@ -80,23 +80,26 @@
                                         $("#options").append(optionDiv);
                                     }
                                 })
+
+                                     event.preventDefault();
+   
                         })
                         $(document).on("click", ".venue-button", function (event) {
                             event.preventDefault();
                             var newBar = {
-                                id: $(this).attr("data-venue-id"),
-                                name: $(this).attr("data-venue-name")
-                            }
-                            $.ajax({
-                                url: "/api/venue/add",
-                                method: "POST",
-                                data: newBar
-                            }).then(function (results) {
-                                location.reload();
-                            });
+                                fourSquareId: $(this).attr("data-venue-id"),
+                                venueName: $(this).attr("data-venue-name"),
+                                routeName: $(this).attr("data-venue-name").replace(/\s+/g, "").toLowerCase()
+                            };
+                            console.log("routeName "+ newBar);
+                            $.post("/api/venue/" + newBar.routeName, 
+                                  newBar)
+                            .then(function (results) {
+                                console.log(JSON.stringify(results));
+                                //location.reload();
+                            })
+                            
                         });
-
-
 
                     </script>
 </body>

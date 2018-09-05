@@ -1,7 +1,7 @@
 var passport = require("passport");
 var Strategy = require("passport-facebook").Strategy;
 require("dotenv").config();
-//var keys = require("../../keys.js");
+
 
 module.exports = function(app) {
   passport.use(
@@ -14,11 +14,13 @@ module.exports = function(app) {
       function(accessToken, refreshToken, profile, cb) {
         return cb(null, profile);
       }
+    
     )
   );
 
   passport.serializeUser(function(user, cb) {
     cb(null, user);
+    console.log("facebook user is "+ user);
   });
 
   passport.deserializeUser(function(obj, cb) {
@@ -45,9 +47,10 @@ module.exports = function(app) {
     req.logout();
     res.redirect("/");
   });
+
+ ;
+  
 };
 
-//console.log("consoling the keys" + keys);
 console.log("Consoling the strategy" + Strategy);
 
-//

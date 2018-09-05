@@ -2,12 +2,12 @@ var path = require("path");
 var request = require("request");
 console.log(path);
 require("dotenv").config();
-var keys = require("../../keys.js");
+//var keys = require("../../keys.js");
 var ensureLogin = require("connect-ensure-login");
 var db = require("../models");
 
 console.log(path);
-console.log(keys);
+
 var NodeGeocoder = require("node-geocoder");
 
 var options = {
@@ -59,68 +59,46 @@ module.exports = function (app) {
       });
   });
 
-  //   var bars = [
-  //     {
-  //       routeName: "local44",
-  //       name: "Yoda",
-  //       role: "Jedi Master",
-  //       id: 900,
-  //       forcePoints: 2000
-  //     },
-  //     {
-  //       routeName: "craftworks",
-  //       name: "Darth Maul",
-  //       role: "Sith Lord",
-  //       id: 200,
-  //       forcePoints: 1200
-  //     },
-  //     {
-  //       routeName: "johnnybrendas",
-  //       name: "Obi Wan Kenobi",
-  //       role: "Jedi Master",
-  //       id: 55,
-  //       forcePoints: 1350
-  //     }
-  //   ];
 
-  //   app.get("/api/bars", function(req, res) {
-  //     return res.json(bars);
-  //   });
+  app.post("/api/venue/:venueName",
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(req, res){ 
+    var newbar = req.body;
 
-  // // refers to bar id // may not be the best routName
-  //   app.get("/api/venue/add/:id", function(req, res) {
-  //     var chosenBar = req.params.id;
+    db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
+      .then(function(results) {
+      console.log(results);
+      newbar.user = req.user;
+      newbar.comments = results;
+      console.log(newbar);
+      return res.json(newbar); // when the time comes, remove this, and use the line below.
+      //res.render("venues", newbar);
+    });
 
-  //     console.log(chosenBar);
-
-  //     for (var i = 0; i < bars.length; i++) {
-  //       if (chosenBar === bars[i].routeName) {
-  //         return res.json(bars[i]);
-  //       }
-  //     }
-
-  //     return res.json(false);
-  //   });
-
-
-  app.post("/api/venue/add", function (request, results) {
-    var newBar = request.body;
-    //newBar.routeName = newBar.id.replace(/\s+/g, "").toLowerCase();
-    console.log("this is the new bars route ="+ newBar.name);
-    //console.log("only console-logging this for eslint "+ results);
-    results.json(newBar);
+    
+    
   });
+   
+  app.post("/api/comment/:venueName",
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(req, res){ 
+    var bar = req.body;
 
+      Comment.create({
+        fbUserId: bar.fbUserId,
+        fbUserDisplayName: bar.fbUserDisplayName,
+        fsVenueId: bar.fsVenueId,
+        body: bar.body,
+      })
+    });
 
-  app.get("/api/venue/:bar", function(req, res) {
-    var chosenBar = req.params.bar;
-    console.log("only console-logging this for eslint "+ res);
+  
 
-    console.log(chosenBar);
-  });
 
   // Get all examples
-  app.get("/api/examples", ensureLogin.ensureLoggedIn("/login"), function(
+  app.get("/api/examples", 
+ensureLogin.ensureLoggedIn("/login"), 
+  function(
     req,
     res
   ) {
@@ -130,7 +108,9 @@ module.exports = function (app) {
   });
 
   // Create a new example
-  app.post("/api/examples", ensureLogin.ensureLoggedIn("/login"), function(
+  app.post("/api/examples",
+   ensureLogin.ensureLoggedIn("/login"), 
+   function(
     req,
     res
   ) {
