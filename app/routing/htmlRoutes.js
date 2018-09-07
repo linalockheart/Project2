@@ -11,11 +11,30 @@ module.exports = function(app) {
     db.Example.findAll({}).then(function(dbExamples) {
       res.render("index", {
         user: req.user,
-        msg: "Welcome!",
-        examples: dbExamples
       });
     });
   });
+
+
+  app.get("/venue/:venueName",
+  ensureLogin.ensureLoggedIn("/login"), 
+  function(req, res){ 
+    var data = {
+        fsVenueId: req.query.venue_id,
+        fsVenueName: req.params.venueName,
+        fbUser: req.user
+    }
+
+    db.Comment.findAll({ where: { fsVenueId: data.fsVenueId }})
+      .then(function(results) {
+        data.comments = results;
+        console.log("log before the data in html routes");
+        console.log(JSON.stringify(data));
+        res.render("comments", data);
+    }); 
+    
+  })
+  
 
 
   // Load example page and pass in an example by id

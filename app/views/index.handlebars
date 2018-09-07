@@ -48,60 +48,40 @@
                     </div>
                     <div id="options">
 
-                    </div>
-                    <script>
-                        $("#submit").on("click", function (event) {
-                            event.preventDefault();
-                            var newSearch = {
-                                name: $("#search").val().trim(),
-                                location: $("#location").val().trim()
-                            }
 
-                            $.post("/api", newSearch)
-                                .then(function (data) {
-                                    var venues = data.response.venues;
-                                    console.log(venues);
-                                    for (var i = 0; i < venues.length; i++) {
-                                        var venue = venues[i];
-                                        console.log("next venue =" + venue.name);
-                                        var optionDiv = $('<div>')
-                                            .attr("id", venue.id)
-                                            .val(venue.name)
-                                            .html(venue.name);
-                                        var optionButton = $("<button>")
-                                            .val("click me")
-                                            .addClass("venue-button")
-                                            .attr("data-venue-id", venue.id)
-                                            .attr("data-venue-name", venue.name)
-                                            .text("Select Me");
+                        <script>
+                            $("#submit").on("click", function (event) {
+                                event.preventDefault();
+                                var newSearch = {
+                                    name: $("#search").val().trim(),
+                                    location: $("#location").val().trim()
+                                }
 
-                                        optionDiv.append(optionButton);
+                                $.post("/api", newSearch)
+                                    .then(function (data) {
+                                        var venues = data.response.venues;
+                                        console.log(venues);
+                                        for (var i = 0; i < venues.length; i++) {
+                                            var venue = venues[i];
+                                            console.log("next venue =" + venue.name);
 
-                                        $("#options").append(optionDiv);
-                                    }
-                                })
+                                            var routeName = venue.name.replace(/\s+/g, "").toLowerCase();
+                                            var url = `/venue/${routeName}?venue_id=${venue.id}`;
 
-                                     event.preventDefault();
-   
-                        })
-                        $(document).on("click", ".venue-button", function (event) {
-                            event.preventDefault();
-                            var newBar = {
-                                fourSquareId: $(this).attr("data-venue-id"),
-                                venueName: $(this).attr("data-venue-name"),
-                                routeName: $(this).attr("data-venue-name").replace(/\s+/g, "").toLowerCase()
-                            };
-                            console.log("routeName "+ newBar);
-                            $.post("/api/venue/" + newBar.routeName, 
-                                  newBar)
-                            .then(function (results) {
-                                console.log(JSON.stringify(results));
-                                //location.reload();
+                                            console.log(url);
+                                            var a = `<a href="${url}">${venue.name}</a>`;
+                                            $("#options").append($(a));
+                                        }
+                                    })
+
+
+
                             })
-                            
-                        });
 
-                    </script>
+
+
+
+                        </script>
 </body>
 
 </html>

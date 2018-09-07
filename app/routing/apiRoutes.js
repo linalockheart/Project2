@@ -60,23 +60,35 @@ module.exports = function (app) {
   });
 
 
-  app.post("/api/venue/:venueName",
+  // app.post("/api/venue/:venueName",
+  // ensureLogin.ensureLoggedIn("/login"), 
+  // function(req, res){ 
+  //   var newbar = req.body;
+
+  //   db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
+  //     .then(function(results) {
+  //     console.log(results);
+  //     newbar.user = req.user;
+  //     newbar.comments = results;
+  //     console.log(newbar);
+  //     //return res.json(newbar); // when the time comes, remove this, and use the line below.
+  //     res.render("comments", newbar);
+  //   });
+
+    
+    
+  // });
+
+  app.get("/api/venue:venueName",
   ensureLogin.ensureLoggedIn("/login"), 
   function(req, res){ 
+    db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
+    .then(function(results) {
+    console.log(results);
     var newbar = req.body;
 
-    db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
-      .then(function(results) {
-      console.log(results);
-      newbar.user = req.user;
-      newbar.comments = results;
-      console.log(newbar);
-      return res.json(newbar); // when the time comes, remove this, and use the line below.
-      //res.render("venues", newbar);
-    });
-
-    
-    
+    res.render("comments", newbar)
+})
   });
    
   app.post("/api/comment/:venueName",
