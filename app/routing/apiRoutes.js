@@ -1,12 +1,9 @@
+require("dotenv").config();
 var path = require("path");
 var request = require("request");
-console.log(path);
-require("dotenv").config();
-//var keys = require("../../keys.js");
 var ensureLogin = require("connect-ensure-login");
 var db = require("../models");
 
-console.log(path);
 
 var NodeGeocoder = require("node-geocoder");
 
@@ -19,6 +16,7 @@ var options = {
   formatter: null // 'gpx', 'string', ...
 };
 var geocoder = NodeGeocoder(options);
+
 
 
 module.exports = function (app) {
@@ -50,7 +48,7 @@ module.exports = function (app) {
           if (err) {
             console.error(err);
           } else {
-            console.log(JSON.parse(body, null, 2));
+            req.session.fsData = body;
             return res.json(JSON.parse(body));
           }
         });
@@ -60,83 +58,62 @@ module.exports = function (app) {
   });
 
 
-  // app.post("/api/venue/:venueName",
-  // ensureLogin.ensureLoggedIn("/login"), 
-  // function(req, res){ 
-  //   var newbar = req.body;
 
-  //   db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
-  //     .then(function(results) {
-  //     console.log(results);
-  //     newbar.user = req.user;
-  //     newbar.comments = results;
-  //     console.log(newbar);
-  //     //return res.json(newbar); // when the time comes, remove this, and use the line below.
-  //     res.render("comments", newbar);
-  //   });
 
-    
-    
-  // });
 
-  app.get("/api/venue:venueName",
-  ensureLogin.ensureLoggedIn("/login"), 
-  function(req, res){ 
-    db.Comment.findAll({ where: { fsVenueId: newbar.fourSquareId }})
-    .then(function(results) {
-    console.log(results);
-    var newbar = req.body;
+  app.post("/api/comments",
+    ensureLogin.ensureLoggedIn("/login"),
+    function (req, res) {
+      var data = req.body;
 
-    res.render("comments", newbar)
-})
-  });
-   
-  app.post("/api/comment/:venueName",
-  ensureLogin.ensureLoggedIn("/login"), 
-  function(req, res){ 
-    var bar = req.body;
 
-      Comment.create({
-        fbUserId: bar.fbUserId,
-        fbUserDisplayName: bar.fbUserDisplayName,
-        fsVenueId: bar.fsVenueId,
-        body: bar.body,
+      db.Comment.create({
+        fbUserId: data.fbUserId,
+        fbUserDisplayName: data.fbUserDisplayName,
+        fsVenueId: data.fsVenueId,
+        body: data.newComment,
       })
+      .then(function(results) {
+        res.redirect("/venue/" + data.routeName + "?venue_id=" + data.fsVenueId);
+      });
     });
 
-  
 
 
   // Get all examples
-  app.get("/api/examples", 
-ensureLogin.ensureLoggedIn("/login"), 
-  function(
-    req,
-    res
-  ) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.json(dbExamples);
+  app.get("/api/examples",
+    ensureLogin.ensureLoggedIn("/login"),
+    function (
+      req,
+      res
+    ) {
+      db.Example.findAll({}).then(function (dbExamples) {
+        res.json(dbExamples);
+      });
     });
-  });
+
+
 
   // Create a new example
   app.post("/api/examples",
-   ensureLogin.ensureLoggedIn("/login"), 
-   function(
-    req,
-    res
-  ) {
-    db.Example.create(req.body).then(function(dbExample) {
-      res.json(dbExample);
+    ensureLogin.ensureLoggedIn("/login"),
+    function (
+      req,
+      res
+    ) {
+      db.Example.create(req.body).then(function (dbExample) {
+        res.json(dbExample);
+      });
     });
-  });
+
+
 
   // Delete an example by id
   app.delete(
     "/api/examples/:id",
     ensureLogin.ensureLoggedIn("/login"),
-    function(req, res) {
-      db.Example.destroy({ where: { id: req.params.id } }).then(function(
+    function (req, res) {
+      db.Example.destroy({ where: { id: req.params.id } }).then(function (
         dbExample
       ) {
         res.json(dbExample);
@@ -144,3 +121,4 @@ ensureLogin.ensureLoggedIn("/login"),
     }
   );
 };
+

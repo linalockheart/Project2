@@ -19,11 +19,28 @@ module.exports = function(app) {
   app.get("/venue/:venueName",
   ensureLogin.ensureLoggedIn("/login"), 
   function(req, res){ 
+    var fsData = [];
+    if ('fsData' in req.session && req.session.fsData != "") {
+      fsData = JSON.parse(req.session.fsData).response.venues;
+    }
+    
+   var chosenVenue = fsData.filter((venue) => {
+     if(venue.id === req.query.venue_id) {
+       return true;
+     }
+   })
+
     var data = {
+        routeName: req.params.venueName,
         fsVenueId: req.query.venue_id,
-        fsVenueName: req.params.venueName,
+        fsVenueData: chosenVenue[0],
         fbUser: req.user
     }
+
+    console.log("=================================")
+    console.log(data)
+    console.log("=================================")
+
 
     db.Comment.findAll({ where: { fsVenueId: data.fsVenueId }})
       .then(function(results) {
