@@ -8,48 +8,17 @@
                         <a href="/logout">Logout</a>
                     </h6>
 
-                    {{!-- <script>
-var x = {{ this.comments }}
-console.log(JSON.stringify(x, null, 2));
-</script> --}}
-
-                    <h1> Hello World - Comment Handlebars</h1>
-                    <h1>{{ this.fsVenueId }} {{ this.fsVenueName }}</h1>
-
-
-                    {{!-- <ul>
-                        {{ #each comments }}
-                        <li>{{ this.fbUserDisplayName }} {{/each}}
-                    </ul> --}}
-
-                    <h1> Have you been to {{ this.fsVenueName}} ?</h1>
-                    <p> then share your thoughts below!</p>
-                    {{!--
-                    <form>
-
-
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1"> Location</label>
-                            <textarea class="form-control" id="comment" rows="3"></textarea>
-                        </div>
-                        <button type="button" id="submit" class="btn btn-outline-primary btn-lg">Search</button>
-                    </form>
-
-
-                    <h1>Here's what our users said about </h1> {{#if this.fsVenueId}}
-                    <div id="newComment"></div>
-
-                    <ul>
-                        {{#each Comment}}
-                        <li>
-                            <p> Our friend,</p>{{this.fbUserDisplayName}}
-                            <p>said</p>
-                        </li>
-                        <li>{{this.body}}</li>
-                    </ul>
-                    <p> Need directions there?</p>
-                    <button id="directions">Directions</button> --}}
-
+                   Hello World<BR>
+Venue Id = {{fsVenueId}}<BR>
+Venue Name = {{fsVenueName}}<BR>
+User Name = {{fbUser.displayName}}
+<ul>
+{{#each comments }}
+  <li>{{this.fbUserDisplayName}} posted the comment {{this.body}} on {{this.createdAt}}
+{{ else}}
+  <p>no comments yet</p>
+{{/each}}
+</ul>
 
                     </body>
 
